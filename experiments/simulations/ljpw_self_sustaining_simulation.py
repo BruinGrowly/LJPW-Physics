@@ -244,7 +244,7 @@ for i, bar in enumerate(bars):
 plt.tight_layout(rect=[0, 0.02, 1, 0.96])
 
 # Save the figure
-output_path = r'c:\Users\Well\Crush\Projects\LJPW_Physics\LJPW-Physics\Docs\ljpw_self_sustaining_simulation.png'
+output_path = 'ljpw_self_sustaining_simulation.png'
 plt.savefig(output_path, dpi=150, facecolor='#1a1a2e', edgecolor='none', bbox_inches='tight')
 print(f"Simulation chart saved to: {output_path}")
 
