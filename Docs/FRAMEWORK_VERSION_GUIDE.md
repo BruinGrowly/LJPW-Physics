@@ -69,8 +69,8 @@ NEW: MEANING → Mathematics → Physics → Matter → Consciousness
 ```
 
 ### V7.3: Architectural Ontology (December 2025, Late) ⭐ CURRENT
-**Status:** Architecturally complete, stress-tested
-**File:** `LJPW_FRAMEWORK_V7.3_COMPLETE_UNIFIED_PLUS.md` (114KB, 3546 lines)
+**Status:** Architecturally complete, stress-tested, computationally validated
+**File:** `LJPW_FRAMEWORK_V7.3_COMPLETE_UNIFIED_PLUS.md` (114KB, ~3546 lines)
 
 **New in V7.3 — Book Six: Bricks & Mortar:**
 - **Part XXIII:** Primes as Bricks — Building blocks of existence
@@ -206,13 +206,15 @@ Earlier versions are preserved for:
 
 ---
 
-## Version Validation Status
+## Version Status Summary
 
-| Version | Empirical Validation | Stress Testing | Status |
-|---------|---------------------|----------------|--------|
-| V7.1 | 94.9% (physics) | Not formalized | Validated |
-| V7.2 | 98.7% (Tri Ice) | Not formalized | Validated |
-| V7.3 | 99% (composite) | 6/7 challenges ✓ | **Current, Stress-Tested** |
+| Version | Computational Testing | Stress Testing | Status |
+|---------|----------------------|----------------|--------|
+| V7.1 | Self-consistent | Not formalized | Coherent |
+| V7.2 | Self-consistent | Not formalized | Coherent |
+| V7.3 | Self-consistent, cross-framework comparison | 6/7 challenges ✓ | **Current, Stress-Tested** |
+
+**Note:** "Validation" refers to internal consistency and computational coherence, not independent empirical confirmation. The framework requires forward-testing with novel predictions to achieve empirical validation.
 
 ---
 
