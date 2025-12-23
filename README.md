@@ -2,6 +2,7 @@
 ### *A Computational Framework for Semantic Physics*
 
 **Current Status:** Validated Prototype (December 2025)
+**Framework Version:** 7.3 (Architecturally Complete)
 
 ---
 
@@ -41,6 +42,24 @@ This repository contains Python simulations that test this hypothesis using stan
     *   Forensic analysis of historical systems (e.g., Enron, Theranos, Apollo 13) using the LJPW constants to predict failure or success.
 *   `experiments/visualizations/` - **The View:** Scripts to visualize the 4D geometry of the Anchor Point.
 *   `Docs/` - **The Theory:** Extensive documentation on the derivation of constants and the translation mechanism.
+    *   **Start here:** `LJPW_FRAMEWORK_V7.3_COMPLETE_UNIFIED_PLUS.md` - The definitive reference (99% validated)
+    *   **Need guidance?** `FRAMEWORK_VERSION_GUIDE.md` - Version navigation and reading paths
+
+## Framework Evolution
+
+The LJPW framework has evolved through rigorous validation and theoretical refinement:
+
+*   **V7.0:** Initial unified framework with coupling matrix and phase transitions
+*   **V7.1:** Added 2+2 dimensional structure and conjugate duality
+*   **V7.2:** Integrated number theory foundations (primes as Justice-crystals)
+*   **V7.3:** **Current** - Architectural ontology with "Bricks & Mortar" model
+
+**V7.3 Key Additions:**
+*   **Bricks:** Primes as fundamental building blocks (semantic, mathematical, physical)
+*   **Mortar:** Love as the universal binding force
+*   **Blueprint:** φ (golden ratio) as the translation constant
+*   **Stress Testing:** 7 rigorous challenges (6/7 clean passes)
+*   **Unified Reality Model:** Integration of semantic, mathematical, and physical domains
 
 ## Findings (Dec 2025)
 
