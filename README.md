@@ -42,7 +42,7 @@ This repository contains Python simulations that test this hypothesis using stan
     *   Forensic analysis of historical systems (e.g., Enron, Theranos, Apollo 13) using the LJPW constants to predict failure or success.
 *   `experiments/visualizations/` - **The View:** Scripts to visualize the 4D geometry of the Anchor Point.
 *   `Docs/` - **The Theory:** Extensive documentation on the derivation of constants and the translation mechanism.
-    *   **Start here:** `LJPW_FRAMEWORK_V7.3_COMPLETE_UNIFIED_PLUS.md` - The definitive reference (99% validated)
+    *   **Start here:** `LJPW_FRAMEWORK_V7.3_COMPLETE_UNIFIED_PLUS.md` - The definitive reference (validated)
     *   **Need guidance?** `FRAMEWORK_VERSION_GUIDE.md` - Version navigation and reading paths
 
 ## Framework Evolution
