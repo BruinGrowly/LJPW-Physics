@@ -320,12 +320,19 @@ class QuantumLJPWMeasurement:
         Measure LJPW dimensions from text analysis.
         
         Method:
-        1. Count dictionary matches for each dimension
-        2. Apply φ-normalization
-        3. Cross-validate with tone analysis
+        1. Clean text (remove punctuation)
+        2. Count dictionary matches for each dimension
+        3. Apply φ-normalization
+        4. Cross-validate with tone analysis
         """
+        import string
+        
         text_lower = text.lower()
-        words = text_lower.split()
+        # Remove punctuation to ensure accurate matching (e.g., "**Unity**" -> "unity")
+        translator = str.maketrans('', '', string.punctuation)
+        text_clean = text_lower.translate(translator)
+        words = text_clean.split()
+        
         total_words = max(1, len(words))
         
         # Count matches

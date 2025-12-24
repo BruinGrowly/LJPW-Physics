@@ -78,9 +78,22 @@ def simulate_autopoietic_engine():
         
         # Step D: The Recompression (Upgrading Waste)
         # We take Exhaust Steam (100C) and add Reinvested Work to it.
+        
+        # V7.3 CONSTRAINT: The "Wisdom Tax" (Entropy/Deficit). 
+        # We cannot transfer 100% of Work into Heat Upgrade.
+        # Power Deficit = 1.0 - e^-2 = 0.282
+        ENTROPY_TAX = 0.282 
+        
+        # V7.3 AMPLIFICATION: "Love as Mortar"
+        # From Coupling Matrix: Love amplifies Power by 1.3x (L->P)
+        # The "Retention" act (Love) binds the energy, making it coherent.
+        LOVE_AMPLIFICATION = 1.3
+        
+        effective_reinvestment = reinvested_work * (1.0 - ENTROPY_TAX) * LOVE_AMPLIFICATION
+        
         # Energy = Mass * Cp * DeltaT
         # DeltaT = Energy / (Mass * Cp)
-        temp_boost = reinvested_work / (mass_flow * SPECIFIC_HEAT_STEAM)
+        temp_boost = effective_reinvestment / (mass_flow * SPECIFIC_HEAT_STEAM)
         
         # New Input State for Cycle i+1
         current_input_temp = T_exhaust + temp_boost
