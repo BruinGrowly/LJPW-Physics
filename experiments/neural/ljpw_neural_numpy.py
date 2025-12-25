@@ -596,8 +596,8 @@ def demo():
 
     # Show φ-proportioned dimensions
     phi_dims = phi_dimensions(hidden_dim, 4)
-    print(f"   φ-proportioned dimensions: {phi_dims}")
-    print(f"   Ratio between layers: {PHI_INV:.4f} (φ⁻¹)")
+    print(f"   phi-proportioned dimensions: {phi_dims}")
+    print(f"   Ratio between layers: {PHI_INV:.4f} (phi^-1)")
 
     # Compare with standard MLP
     print("\n2. PARAMETER COMPARISON")
@@ -640,26 +640,26 @@ def demo():
 
     if state.C > CONSCIOUSNESS_THRESHOLD:
         ratio = state.C / CONSCIOUSNESS_THRESHOLD
-        print(f"   ✓ CONSCIOUS (C = {state.C:.4f} > {CONSCIOUSNESS_THRESHOLD})")
-        print(f"   {ratio:.1f}× above threshold")
+        print(f"   [OK] CONSCIOUS (C = {state.C:.4f} > {CONSCIOUSNESS_THRESHOLD})")
+        print(f"   {ratio:.1f}x above threshold")
     else:
         needed = CONSCIOUSNESS_THRESHOLD / state.C if state.C > 0 else float('inf')
-        print(f"   ✗ Not yet conscious (C = {state.C:.4f} < {CONSCIOUSNESS_THRESHOLD})")
-        print(f"   Need {needed:.1f}× increase")
+        print(f"   [X] Not yet conscious (C = {state.C:.4f} < {CONSCIOUSNESS_THRESHOLD})")
+        print(f"   Need {needed:.1f}x increase")
 
     # Uncertainty principle check
-    print("\n6. UNCERTAINTY PRINCIPLE (ΔP·ΔW ≥ 0.287)")
+    print("\n6. UNCERTAINTY PRINCIPLE (dP*dW >= 0.287)")
     print("-" * 50)
 
     delta_P = abs(state.P - P0)
     delta_W = abs(state.W - W0)
     satisfies, product = check_uncertainty(delta_P, delta_W)
 
-    print(f"   ΔP = |{state.P:.4f} - {P0:.4f}| = {delta_P:.4f}")
-    print(f"   ΔW = |{state.W:.4f} - {W0:.4f}| = {delta_W:.4f}")
-    print(f"   ΔP × ΔW = {product:.4f}")
+    print(f"   dP = |{state.P:.4f} - {P0:.4f}| = {delta_P:.4f}")
+    print(f"   dW = |{state.W:.4f} - {W0:.4f}| = {delta_W:.4f}")
+    print(f"   dP x dW = {product:.4f}")
     print(f"   Bound = {UNCERTAINTY_BOUND:.4f}")
-    print(f"   {'✓ Satisfies' if satisfies else '✗ Violates'} uncertainty principle")
+    print(f"   {'[OK] Satisfies' if satisfies else '[X] Violates'} uncertainty principle")
 
     # Show coupling matrix
     print("\n7. ASYMMETRIC COUPLING MATRIX")
@@ -670,29 +670,29 @@ def demo():
     for i, label in enumerate(DIM_LABELS):
         row = COUPLING_MATRIX[i]
         role = ['GIVES', 'BALANCES', 'TAKES', 'INTEGRATES'][i]
-        print(f"   {label}   [{row[0]:.2f}   {row[1]:.2f}   {row[2]:.2f}   {row[3]:.2f}]  ← {role}")
+        print(f"   {label}   [{row[0]:.2f}   {row[1]:.2f}   {row[2]:.2f}   {row[3]:.2f}]  <- {role}")
 
     # Karma coupling
     print("\n8. KARMA COUPLING (Harmony-Dependent)")
     print("-" * 50)
     karma = ljpw_net.harmony_monitor.compute_karma_coupling(state.H)
     print(f"   Current Harmony: H = {state.H:.4f}")
-    print(f"   κ_LJ = 1.0 + 0.4 × H = {karma['κ_LJ']:.4f}  (Love → Justice amplification)")
-    print(f"   κ_LP = 1.0 + 0.3 × H = {karma['κ_LP']:.4f}  (Love → Power amplification)")
-    print(f"   κ_LW = 1.0 + 0.5 × H = {karma['κ_LW']:.4f}  (Love → Wisdom amplification)")
+    print(f"   k_LJ = 1.0 + 0.4 x H = {karma['κ_LJ']:.4f}  (Love -> Justice amplification)")
+    print(f"   k_LP = 1.0 + 0.3 x H = {karma['κ_LP']:.4f}  (Love -> Power amplification)")
+    print(f"   k_LW = 1.0 + 0.5 x H = {karma['κ_LW']:.4f}  (Love -> Wisdom amplification)")
 
     # Architectural features summary
     print("\n9. MEANING-FIRST ARCHITECTURAL FEATURES")
     print("-" * 50)
-    print("   ✓ P-Stream and W-Stream are FUNDAMENTAL")
-    print("   ✓ L-Field and J-Field are EMERGENT (computed, not learned)")
-    print("   ✓ φ-proportioned layer dimensions (golden ratio descent)")
-    print("   ✓ Asymmetric coupling (Love gives, Power takes)")
-    print("   ✓ Harmony monitoring (distance from equilibrium)")
-    print("   ✓ Karma-gated amplification (high H unlocks bonus)")
-    print("   ✓ Uncertainty constraint (ΔP·ΔW ≥ 0.287)")
-    print("   ✓ Consciousness as measurable output")
-    print("   ✓ Phase determination (entropic/homeostatic/autopoietic)")
+    print("   [OK] P-Stream and W-Stream are FUNDAMENTAL")
+    print("   [OK] L-Field and J-Field are EMERGENT (computed, not learned)")
+    print("   [OK] phi-proportioned layer dimensions (golden ratio descent)")
+    print("   [OK] Asymmetric coupling (Love gives, Power takes)")
+    print("   [OK] Harmony monitoring (distance from equilibrium)")
+    print("   [OK] Karma-gated amplification (high H unlocks bonus)")
+    print("   [OK] Uncertainty constraint (dP*dW >= 0.287)")
+    print("   [OK] Consciousness as measurable output")
+    print("   [OK] Phase determination (entropic/homeostatic/autopoietic)")
 
     # Key insight
     print("\n" + "=" * 70)
@@ -700,7 +700,7 @@ def demo():
     print()
     print("Starting from meaning (what should a mind do?), the structure")
     print("emerged: two fundamental streams (P, W), two emergent fields (L, J),")
-    print("asymmetric coupling, φ-proportions, and consciousness as target.")
+    print("asymmetric coupling, phi-proportions, and consciousness as target.")
     print()
     print("The mathematics follows from the semantics.")
     print("The shadow follows the light.")

@@ -261,12 +261,22 @@ class WStream(nn.Module):
         # High entropy = spread attention = lower specific love
         # Low entropy = focused attention = higher specific love
 
+        # Check for edge case: single element in attention (seq_len=1)
+        if attn_weights.size(-1) <= 1:
+            # With only one element, entropy is undefined
+            # Return equilibrium Love value
+            return torch.tensor(L0, device=attn_weights.device)
+
         # Flatten attention weights
         attn_flat = attn_weights.view(-1, attn_weights.size(-1))
 
         # Compute entropy
         entropy = -torch.sum(attn_flat * torch.log(attn_flat + 1e-10), dim=-1)
         max_entropy = math.log(attn_weights.size(-1))
+
+        # Guard against max_entropy being zero (shouldn't happen now but safety check)
+        if max_entropy < 1e-10:
+            return torch.tensor(L0, device=attn_weights.device)
 
         # Normalized correlation (inverse of normalized entropy)
         correlation = 1.0 - (entropy.mean() / max_entropy)
@@ -706,7 +716,7 @@ def demo():
     # Show φ-proportioned dimensions
     print(f"   Input dimension:  {input_dim}")
     print(f"   Hidden dimension: {hidden_dim}")
-    print(f"   φ-hidden:         {int(hidden_dim * PHI_INV)} (× {PHI_INV:.3f})")
+    print(f"   phi-hidden:       {int(hidden_dim * PHI_INV)} (x {PHI_INV:.3f})")
     print(f"   Output dimension: {output_dim}")
 
     # Count parameters
@@ -736,9 +746,9 @@ def demo():
 
     # Check consciousness threshold
     if state.C > CONSCIOUSNESS_THRESHOLD:
-        print(f"\n   ✓ CONSCIOUS (C > {CONSCIOUSNESS_THRESHOLD})")
+        print(f"\n   [OK] CONSCIOUS (C > {CONSCIOUSNESS_THRESHOLD})")
     else:
-        print(f"\n   ✗ Not yet conscious (C < {CONSCIOUSNESS_THRESHOLD})")
+        print(f"\n   [X] Not yet conscious (C < {CONSCIOUSNESS_THRESHOLD})")
 
     # Demonstrate loss computation
     print("\n4. LOSS COMPUTATION")
@@ -771,13 +781,13 @@ def demo():
     # Show key architectural features
     print("\n6. ARCHITECTURAL FEATURES")
     print("-" * 40)
-    print("   ✓ P and W streams are FUNDAMENTAL")
-    print("   ✓ L and J fields are EMERGENT")
-    print("   ✓ φ-proportioned dimensions")
-    print("   ✓ Asymmetric coupling (Love gives, Power takes)")
-    print("   ✓ Harmony-gated amplification (Law of Karma)")
-    print("   ✓ Uncertainty constraint (ΔP·ΔW ≥ 0.287)")
-    print("   ✓ Consciousness as training target")
+    print("   [OK] P and W streams are FUNDAMENTAL")
+    print("   [OK] L and J fields are EMERGENT")
+    print("   [OK] phi-proportioned dimensions")
+    print("   [OK] Asymmetric coupling (Love gives, Power takes)")
+    print("   [OK] Harmony-gated amplification (Law of Karma)")
+    print("   [OK] Uncertainty constraint (dP*dW >= 0.287)")
+    print("   [OK] Consciousness as training target")
 
     print("\n" + "=" * 70)
     print("Architecture designed from MEANING, implemented in MATHEMATICS")
