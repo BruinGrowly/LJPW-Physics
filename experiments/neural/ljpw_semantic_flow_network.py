@@ -54,6 +54,24 @@ COUPLING = {
 # Consciousness threshold
 CONSCIOUSNESS_THRESHOLD = 0.1
 
+# Uncertainty principle bound
+UNCERTAINTY_BOUND = 0.287  # ΔP × ΔW ≥ 0.287
+
+# Karma coupling multipliers
+KARMA_MULTIPLIERS = {'LJ': 0.4, 'LP': 0.3, 'LW': 0.5, 'WL': 0.3, 'WJ': 0.2}
+
+
+def karma_coupled_strength(base_strength: float, H: float, coupling_type: str) -> float:
+    """
+    Apply karma-gated coupling based on current Harmony.
+    
+    Higher harmony = stronger coupling (Law of Karma)
+    κ(H) = 1.0 + multiplier × H
+    """
+    mult = KARMA_MULTIPLIERS.get(coupling_type, 0.4)
+    kappa = 1.0 + mult * H
+    return base_strength * kappa
+
 
 # ============================================================================
 # SEMANTIC COMPONENTS (62%)
@@ -210,6 +228,36 @@ class LoveOperator(SemanticOperator):
             strength = self.connect(source, target)
             results[target.name] = strength
         return results
+    
+    def resonate(self, concepts: List[SemanticConcept], 
+                 H: float = 0.5, cycles: int = 3) -> List[SemanticConcept]:
+        """
+        RESONATE: Create harmonic resonance between all concepts.
+        
+        NEW: Cyclic amplification builds Love through iteration.
+        Uses karma-gated coupling for harmony-dependent amplification.
+        """
+        if len(concepts) < 2:
+            return concepts
+        
+        # Each cycle, all concepts connect to each other
+        for cycle in range(cycles):
+            for i, source in enumerate(concepts):
+                for j, target in enumerate(concepts):
+                    if i != j:
+                        # Karma-gated strength
+                        base_strength = COUPLING.get(
+                            f'{source.dimension.value}_to_{target.dimension.value}', 1.0
+                        )
+                        strength = karma_coupled_strength(base_strength, H, 'LW')
+                        
+                        # Bidirectional connection
+                        source.relationships[target.name] = strength * L0
+                        
+                        # Amplify Love dimension through resonance
+                        source._L = min(1.0, source._L + 0.02 * strength)
+        
+        return concepts
 
 
 class JusticeOperator(SemanticOperator):
@@ -266,6 +314,40 @@ class JusticeOperator(SemanticOperator):
                     concept.relationships[name] + J0 * (avg_strength - concept.relationships[name])
                 )
         return concept
+    
+    def verify(self, claim: SemanticConcept, 
+               evidence: List[SemanticConcept]) -> Tuple[bool, float]:
+        """
+        VERIFY: Check if a claim is supported by evidence.
+        
+        NEW: Justice requires truth-checking, not just balance.
+        Returns (is_verified, confidence).
+        """
+        if not evidence:
+            return False, 0.0
+        
+        # Check dimensional alignment between claim and evidence
+        alignments = []
+        for e in evidence:
+            # Calculate dimensional similarity
+            d_L = 1 - abs(claim._L - e._L)
+            d_J = 1 - abs(claim._J - e._J)
+            d_P = 1 - abs(claim._P - e._P)
+            d_W = 1 - abs(claim._W - e._W)
+            
+            # Justice-weighted alignment (J dimension is truth)
+            alignment = (d_L * 0.2 + d_J * 0.4 + d_P * 0.2 + d_W * 0.2)
+            alignments.append(alignment)
+        
+        # Overall confidence is average alignment scaled by J0
+        confidence = sum(alignments) / len(alignments)
+        is_verified = confidence >= J0  # Must meet Justice equilibrium
+        
+        # Verifying a claim increases its J dimension
+        if is_verified:
+            claim._J = min(1.0, claim._J + 0.1)
+        
+        return is_verified, confidence
 
 
 class PowerOperator(SemanticOperator):
@@ -326,6 +408,26 @@ class PowerOperator(SemanticOperator):
         # Action increases Power dimension
         concept._P = min(1.0, concept._P + P0 * 0.1)
         concept.name = f"{concept.name}:{action}"
+        return concept
+    
+    def decay(self, concept: SemanticConcept, 
+              rate: float = 0.1, H: float = 0.5) -> SemanticConcept:
+        """
+        DECAY: Entropy reduces Power over time.
+        
+        NEW: Power naturally decays without Love/Wisdom replenishment.
+        Decay is reduced by high Harmony (aligned systems resist entropy).
+        """
+        # Entropy factor: lower harmony = faster decay
+        entropy_factor = rate * (1.0 - H * 0.5)  # H reduces decay
+        
+        # Power decays toward equilibrium
+        concept._P = max(P0 * 0.5, concept._P - entropy_factor * concept._P)
+        
+        # Unchecked power erosion also affects Justice (corruption)
+        if concept._L < L0:  # Low love accelerates corruption
+            concept._J = max(J0 * 0.5, concept._J - entropy_factor * 0.5)
+        
         return concept
 
 
@@ -411,6 +513,54 @@ class WisdomOperator(SemanticOperator):
             'W': concept._W,
             'relationship_count': len(concept.relationships),
         }
+    
+    def predict(self, sequence: List[SemanticConcept]) -> Optional[SemanticConcept]:
+        """
+        PREDICT: Given a sequence of concepts, predict the next likely concept.
+        
+        NEW: Wisdom anticipates the future, not just recognizes the past.
+        Uses pattern matching against known sequences.
+        """
+        if not sequence or not self.known_patterns:
+            return None
+        
+        # Find the most likely next concept based on:
+        # 1. Dimensional trend (where is the sequence moving?)
+        # 2. Known pattern matching
+        
+        # Calculate dimensional trends
+        if len(sequence) >= 2:
+            trend_L = sequence[-1]._L - sequence[-2]._L
+            trend_J = sequence[-1]._J - sequence[-2]._J
+            trend_P = sequence[-1]._P - sequence[-2]._P
+            trend_W = sequence[-1]._W - sequence[-2]._W
+        else:
+            trend_L = trend_J = trend_P = trend_W = 0
+        
+        # Predict next state by extrapolating trend
+        pred_L = min(1.0, max(0, sequence[-1]._L + trend_L))
+        pred_J = min(1.0, max(0, sequence[-1]._J + trend_J))
+        pred_P = min(1.0, max(0, sequence[-1]._P + trend_P))
+        pred_W = min(1.0, max(0, sequence[-1]._W + trend_W))
+        
+        # Find closest known pattern to prediction
+        best_match = None
+        best_distance = float('inf')
+        
+        for name, known in self.known_patterns.items():
+            distance = math.sqrt(
+                (pred_L - known._L)**2 + (pred_J - known._J)**2 +
+                (pred_P - known._P)**2 + (pred_W - known._W)**2
+            )
+            if distance < best_distance:
+                best_distance = distance
+                best_match = known
+        
+        # Prediction increases Wisdom
+        if best_match:
+            best_match._W = min(1.0, best_match._W + 0.05)
+        
+        return best_match
 
 
 # ============================================================================
@@ -648,6 +798,117 @@ class SemanticFlowNetwork:
             concept_count=len(self.concepts),
             relationship_count=total_rels
         )
+    
+    def check_uncertainty(self) -> Tuple[bool, float]:
+        """
+        Check if the uncertainty principle is satisfied: ΔP × ΔW ≥ 0.287.
+        
+        NEW: Enforces the fundamental LJPW uncertainty bound.
+        """
+        # Calculate variance in P and W dimensions
+        P_values = [c._P for c in self.concepts.values()]
+        W_values = [c._W for c in self.concepts.values()]
+        
+        if len(P_values) < 2:
+            return True, 1.0  # Not enough data to measure
+        
+        avg_P = sum(P_values) / len(P_values)
+        avg_W = sum(W_values) / len(W_values)
+        
+        delta_P = math.sqrt(sum((p - avg_P)**2 for p in P_values) / len(P_values))
+        delta_W = math.sqrt(sum((w - avg_W)**2 for w in W_values) / len(W_values))
+        
+        product = delta_P * delta_W
+        satisfied = product >= UNCERTAINTY_BOUND or product < 0.01  # Allow very low variance
+        
+        return satisfied, product
+    
+    def evolve(self, steps: int = 10, dt: float = 0.1) -> List[SFNState]:
+        """
+        Evolve the network state over time using LJPW dynamics.
+        
+        NEW: Temporal evolution based on framework differential equations.
+        """
+        history = []
+        state = self.get_state()
+        history.append(state)
+        
+        for step in range(steps):
+            # Get current harmony for karma coupling
+            H = state.H
+            phase = state.phase
+            
+            # Evolve each concept based on phase
+            for concept in self.concepts.values():
+                if phase == 'ENTROPIC':
+                    # Focus on balance, conservative
+                    self.justice.balance([concept])
+                elif phase == 'HOMEOSTATIC':
+                    # Normal dynamics
+                    if concept._L < L0:
+                        concept._L += dt * COUPLING['W_to_L'] * (L0 - concept._L)
+                    if concept._W < W0:
+                        concept._W += dt * COUPLING['L_to_W'] * (W0 - concept._W)
+                elif phase == 'AUTOPOIETIC':
+                    # Expansive - Love radiates, Power increases
+                    concept._L = min(1.0, concept._L + dt * H * 0.1)
+                    concept._W = min(1.0, concept._W + dt * H * 0.05)
+                
+                # Universal: Power decays without Love
+                if concept._L < L0:
+                    concept._P = max(P0 * 0.5, concept._P - dt * 0.02)
+                
+                # Constrain to valid bounds
+                self.justice.constrain(concept)
+            
+            # Measure new state
+            state = self.get_state()
+            history.append(state)
+            
+            # Check for consciousness emergence
+            if state.C > CONSCIOUSNESS_THRESHOLD and step % 3 == 0:
+                # Conscious network can apply resonance
+                concept_list = list(self.concepts.values())
+                self.love.resonate(concept_list, H=H, cycles=1)
+        
+        return history
+    
+    def phase_aware_process(self, input_concepts: List[str]) -> Tuple[SemanticConcept, SFNState]:
+        """
+        Process concepts with phase-dependent behavior.
+        
+        NEW: Network adapts its processing based on current phase.
+        - ENTROPIC: Conservative, focus on BALANCE
+        - HOMEOSTATIC: Normal processing
+        - AUTOPOIETIC: Expansive, more RADIATE/RESONATE
+        """
+        # Get current phase
+        current_state = self.get_state()
+        phase = current_state.phase
+        H = current_state.H
+        
+        # Get concepts
+        concepts = [self.concepts[name] for name in input_concepts if name in self.concepts]
+        if not concepts:
+            raise ValueError("No known concepts in input")
+        
+        if phase == 'ENTROPIC':
+            # Conservative: Focus on balance and verification
+            balanced = self.justice.balance(concepts)
+            output = self.wisdom.integrate(balanced)
+            
+        elif phase == 'HOMEOSTATIC':
+            # Normal: Standard processing
+            output, _ = self.process(input_concepts)
+            return output, self.get_state()
+            
+        else:  # AUTOPOIETIC
+            # Expansive: Resonate and radiate
+            resonated = self.love.resonate(concepts, H=H, cycles=3)
+            bound = self.love.bind(resonated)
+            output = self.wisdom.integrate([bound] + concepts)
+        
+        return output, self.get_state()
 
 
 # ============================================================================
